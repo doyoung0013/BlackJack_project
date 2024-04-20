@@ -24,7 +24,8 @@ class BlackJack{
 public class BlackJackTest {
 
 	public static void main(String[] args) {
-		BlackJack blackjack = new BlackJack();
+		BlackJack blackjack = new BlackJack(); //cardList 값 초기화 위해
+		boolean end = false; //while문 제어
 		
 		System.out.println("블랙잭 게임을 시작합니다.");
 		System.out.println("지금부터 딜러 카드를 배분하겠습니다.");
@@ -40,7 +41,11 @@ public class BlackJackTest {
 		playerCard = playerCardSelect();
 		System.out.println("당신의 두 번째 카드: "+playerCard);
 		
-		boolean end = false;
+		if(BlackJack.dealerTotal>21) {
+			System.out.println("딜러의 카드 합이 21이 넘어 게임이 종료됩니다.");
+			end = true;
+		}
+		
 		while(!end) {
 			//딜러 턴
 			System.out.println("-----------------------------------");
@@ -49,14 +54,10 @@ public class BlackJackTest {
 				System.out.println("딜러 카드 한 장을 뽑습니다.");
 				dealerCardSelect();
 				if(BlackJack.dealerTotal>21) {
-					System.out.println("딜러의 점수 합 21이 넘어 게임이 종료됩니다.");
+					System.out.println("딜러의 카드 합이 21이 넘어 게임이 종료됩니다.");
 					end = true; break; //break >> while문 탈출(플레이어 턴 없이 끝나게)
 				}
-			}else if(BlackJack.dealerTotal>21) {
-				System.out.println("딜러의 점수 합 21이 넘어 게임이 종료됩니다.");
-				end = true; break;
-			}
-			else{
+			}else{
 				System.out.println("딜러는 카드를 뽑지않았습니다.");
 			}
 			
@@ -72,7 +73,7 @@ public class BlackJackTest {
 				playerCard = playerCardSelect();
 				System.out.println("당신의 새로 뽑은 카드: "+playerCard);
 				if(BlackJack.playerTotal>21) {
-					System.out.println("카드의 합이 21이 넘어 종료됩니다.");
+					System.out.println("플레이어 카드의 합이 21이 넘어 종료됩니다.");
 					end = true;
 				}
 				break;
@@ -108,6 +109,7 @@ public class BlackJackTest {
 		
 	}
 	
+	//딜러 카드를 한 장 뽑은 후 카드저장, 누적값 구하는 메서드
 	private static String dealerCardSelect() {
 		Random ran = new Random();
 		int randomNum = ran.nextInt(13);//카드 종류는 13가지로 고정
@@ -116,6 +118,7 @@ public class BlackJackTest {
 		BlackJack.dealerTotal += BlackJack.cardList.get(selectCard);
 		return selectCard;
 	}
+	//플레이어 카드를 한 장 뽑은 후 카드저장, 누적값 구하는 메서드
 	private static String playerCardSelect() {
 		Random ran = new Random();
 		int randomNum = ran.nextInt(13);
